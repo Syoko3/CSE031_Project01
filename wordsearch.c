@@ -62,7 +62,7 @@ void printPuzzle(char** arr) {
     // Did by Sohdai
     for (int i = 0; i < bSize; i++) {
         for (int j = 0; j < bSize; j++) {
-            printf("%s ", *(*(arr + i) + j));
+            printf("%c ", *(*(arr + i) + j));
         }
         printf("\n");
     }
@@ -75,5 +75,13 @@ void searchPuzzle(char** arr, char* word) {
     // as shown in the sample runs. If not found, it will print a 
     // different message as shown in the sample runs.
     // Your implementation here...
-
+    // search_path - 2D-array with all 0s initialized in each row and col
+    int** search_path = (int**) malloc (bSize * sizeof(int*));
+    for (int i = 0; i < bSize; i++) {
+        *(search_path + i) = (int*) malloc (bSize * sizeof(int));
+        for (int j = 0; j < bSize; j++) {
+            *(*(search_path + i) + j) = 0;
+        }
+    }
+    
 }
