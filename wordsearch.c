@@ -8,6 +8,14 @@ void printPuzzle(char** arr);
 void searchPuzzle(char** arr, char* word);
 int bSize;
 
+//helper function to convert character to lowercase (because the project instructions said that the search should be case insensitive)
+char toLower(char c) {
+    if (c >= 'A' && c <= 'Z') {
+        return c + ('a' - 'A');
+    }
+    return c;
+}
+
 // Main function, DO NOT MODIFY 	
 int main(int argc, char **argv) {
     if (argc != 2) {
