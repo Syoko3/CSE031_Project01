@@ -6,7 +6,7 @@
 // Feel free to declare any helper functions or global variables
 void printPuzzle(char** arr);
 void searchPuzzle(char** arr, char* word);
-int bSize;
+int bSize; //global variable to hold puzzle grid size
 
 //helper function to convert character to lowercase (because the project instructions said that the search should be case insensitive)
 char toLower(char c) {
@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    // Read the size of the puzzle block
+    // Read the size of the puzzle block (ex., '5' would make a 5x5 puzzle grid)
     fscanf(fptr, "%d\n", &bSize);
     
     // Allocate space for the puzzle block and the word to be searched
