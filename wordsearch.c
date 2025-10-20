@@ -8,13 +8,8 @@ void printPuzzle(char** arr);
 void searchPuzzle(char** arr, char* word);
 int bSize; //global variable to hold puzzle grid size
 
-//helper function to convert character to lowercase (because the project instructions said that the search should be case insensitive)
-char toLower(char c) {
-    if (c >= 'A' && c <= 'Z') {
-        return c + ('a' - 'A');
-    }
-    return c;
-}
+//helper function declarations go here 🐻😭😭🙏
+int isSameChar(char a, char b); // purpose of this function is to make the code case insensitive AND to compare two letters (a letter from the puzzle grid compared with a letter from the user's word)
 
 // Main function, DO NOT MODIFY 	
 int main(int argc, char **argv) {
@@ -76,6 +71,19 @@ void printPuzzle(char** arr) {
     }
     printf("\n");
 }
+
+int isSameChar(char a, char b){
+	//input a : letter from puzzle grid
+	//input b : letter from user's search word
+	//the purpose of this function is to make the code case insensitive AND to compare a letter in a puzzle grid (input a) with a letter from the user's word (input b)
+	//this works because in ASCII, the lowercase letters are always 32 higher than the uppercase letters
+	if(a >= 'a' && a <= 'z'){
+		a = a - 32;
+	}
+	if(b >= 'a' && b <= 'z'){
+		b = b - 32;
+	}
+	return a == b; //returns 1 if characters match, otherwise returns 0
 
 void searchPuzzle(char** arr, char* word) {
     // This function checks if arr contains the search word. If the 
