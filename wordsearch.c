@@ -9,6 +9,7 @@ void searchPuzzle(char** arr, char* word);
 int bSize; //global variable to hold puzzle grid size
 
 //helper function declarations go here 🐻😭😭🙏
+int wordlength(char* word); // purpose of this function is to count the user's word length
 int isSameChar(char a, char b); // purpose of this function is to make the code case insensitive AND to compare two letters (a letter from the puzzle grid compared with a letter from the user's word)
 void markPath(int** path, int row, int col, int index); // purpose of this function is to mark the path in the result matrix
 
@@ -63,7 +64,6 @@ void printPuzzle(char** arr) {
     // It must produce the output in the SAME format as the samples 
     // in the instructions.
     // Your implementation here...
-    // Did by Sohdai
     for (int i = 0; i < bSize; i++) {
         for (int j = 0; j < bSize; j++) {
             printf("%c ", *(*(arr + i) + j));
@@ -71,6 +71,19 @@ void printPuzzle(char** arr) {
         printf("\n");
     }
     printf("\n");
+}
+
+int wordlength(char* word) {
+    int length = 0;
+    int i = 0;
+    
+    // Counting each letter of the word
+    while (*(word + i) != NULL) {
+        length += 1;
+        i += 1;
+    }
+    
+    return length;
 }
 
 int isSameChar(char a, char b){
@@ -112,4 +125,41 @@ void searchPuzzle(char** arr, char* word) {
         }
     }
     
+    int word_length = wordlength(word);
+    int found = 0;
+    // This code needs to be fixed
+    // for (int k = 0; k < word_length; k++) {
+    //     char curr_letter = *(word + k);
+    //     int curr_index_found = 0;
+    //     for (int i = 0; i < bSize; i++) {
+    //         for (int j = 0; j < bSize; j++) {
+    //             int same = isSameChar(*(*(arr + i) + j), curr_letter);
+    //             if (same == 1) {
+    //                 markPath(search_path, i, j, k + 1);
+    //                 curr_index_found = 1;
+    //             }
+    //         }
+    //     }
+    //     if (curr_index_found == 0) {
+    //         found = 0;
+    //         break;
+    //     }
+    //     else {
+    //         found = 1;
+    //     }
+    // }
+
+    if (found == 0) {
+        printf("Word not found!\n");
+    }
+    else {
+        printf("Word found!\n");
+        for (int i = 0; i < bSize; i++) {
+            for (int j = 0; j < bSize; j++) {
+                printf("%d ", *(*(search_path + i) + j));
+            }
+            printf("\n");
+        }
+        printf("\n");
+    }
 }
