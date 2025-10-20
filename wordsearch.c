@@ -10,6 +10,7 @@ int bSize; //global variable to hold puzzle grid size
 
 //helper function declarations go here 🐻😭😭🙏
 int isSameChar(char a, char b); // purpose of this function is to make the code case insensitive AND to compare two letters (a letter from the puzzle grid compared with a letter from the user's word)
+void markPath(int** path, int row, int col, int index); // purpose of this function is to mark the path in the result matrix
 
 // Main function, DO NOT MODIFY 	
 int main(int argc, char **argv) {
@@ -84,6 +85,16 @@ int isSameChar(char a, char b){
 		b = b - 32;
 	}
 	return a == b; //returns 1 if characters match, otherwise returns 0
+
+void markPath(int** path, int row, int col, int index){
+    int current = *(*(path + row) + col);
+    if(current == 0){
+        *(*(path + row) + col) = index;
+    } else{
+        // Combine indices if multiple paths go through the same cell
+        *(*(path + row) + col) = current * 10 + index;
+    }
+}
 
 void searchPuzzle(char** arr, char* word) {
     // This function checks if arr contains the search word. If the 
