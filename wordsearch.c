@@ -85,6 +85,7 @@ int isSameChar(char a, char b){
 		b = b - 32;
 	}
 	return a == b; //returns 1 if characters match, otherwise returns 0
+}
 
 void markPath(int** path, int row, int col, int index){
     int current = *(*(path + row) + col);
