@@ -154,9 +154,10 @@ void searchPuzzle(char** arr, char* word) {
     }
     else {
         printf("Word found!\n");
+        printf("Printing the search path:\n");
         for (int i = 0; i < bSize; i++) {
             for (int j = 0; j < bSize; j++) {
-                printf("%d ", *(*(search_path + i) + j));
+                printf("%d     ", *(*(search_path + i) + j));
             }
             printf("\n");
         }
