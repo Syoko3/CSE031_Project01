@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string.h>  //I genuinely don't think that this does anything lol but I'm not gonna remove it just yet
 
 // Declarations of the two functions you will implement
 // Feel free to declare any helper functions or global variables
@@ -165,7 +165,7 @@ void searchPuzzle(char** arr, char* word) {
     // different message as shown in the sample runs.
     // Your implementation here...
 
-	int wordLen = wordLength(word);
+	int wordLen = wordlength(word); //I changed it from wordLength to wordlength (with a lowercase l)
 	
     // search_path - 2D-array with all 0s initialized in each row and col
     int** search_path = (int**) malloc (bSize * sizeof(int*));
@@ -178,7 +178,7 @@ void searchPuzzle(char** arr, char* word) {
     
     //int word_length = wordlength(word);
     int found = 0;
-    // This code needs to be fixed
+    // This was the code that needed to be fixed. I made a revised version of it. But I am leaving this here just for future reference.
     // for (int k = 0; k < word_length; k++) {
     //     char curr_letter = *(word + k);
     //     int curr_index_found = 0;
