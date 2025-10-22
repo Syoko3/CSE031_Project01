@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>  //I genuinely don't think that this does anything lol but I'm not gonna remove it just yet
+#include <string.h>
 
 // Declarations of the two functions you will implement
 // Feel free to declare any helper functions or global variables
@@ -8,11 +8,10 @@ void printPuzzle(char** arr);
 void searchPuzzle(char** arr, char* word);
 int bSize; //global variable to hold puzzle grid size
 
-//helper function declarations go here 🐻😭😭🙏
-int wordlength(char* word); // purpose of this function is to count the user's word length
-int isSameChar(char a, char b); // purpose of this function is to make the code case insensitive AND to compare two letters (a letter from the puzzle grid compared with a letter from the user's word)
-int searchWord(char** arr, char* word, int row, int col, int** path, int step, int wordLen); //purpose of this function is to search for the word recursively
-void markPath(int** path, int row, int col, int index); // purpose of this function is to mark the path in the result matrix
+// Helper function declarations go here
+int isSameChar(char a, char b); // Purpose of this function is to make the code case insensitive AND to compare two letters (a letter from the puzzle grid compared with a letter from the user's word)
+int searchWord(char** arr, char* word, int row, int col, int** path, int step, int wordLen); // Purpose of this function is to search for the word recursively
+void markPath(int** path, int row, int col, int index); // Purpose of this function is to mark the path in the result matrix
 
 // Main function, DO NOT MODIFY 	
 int main(int argc, char **argv) {
@@ -74,56 +73,52 @@ void printPuzzle(char** arr) {
     printf("\n");
 }
 
-int wordlength(char* word) {
-    int length = 0;
-    int i = 0;
-    
-    // Counting each letter of the word
-    while (*(word + i) != NULL) {
-        length += 1;
-        i += 1;
-    }
-    
-    return length;
-}
-
-int isSameChar(char a, char b){
-	//input a : letter from puzzle grid
-	//input b : letter from user's search word
-	//the purpose of this function is to make the code case insensitive AND to compare a letter in a puzzle grid (input a) with a letter from the user's word (input b)
-	//this works because in ASCII, the lowercase letters are always 32 higher than the uppercase letters
-	if(a >= 'a' && a <= 'z'){
+int isSameChar(char a, char b) {
+	// input a : letter from puzzle grid
+	// input b : letter from user's search word
+	// the purpose of this function is to make the code case insensitive AND to compare a letter in a puzzle grid (input a) with a letter from the user's word (input b)
+	// this works because in ASCII, the lowercase letters are always 32 higher than the uppercase letters
+	if (a >= 'a' && a <= 'z') {
 		a = a - 32;
 	}
-	if(b >= 'a' && b <= 'z'){
+	if (b >= 'a' && b <= 'z') {
 		b = b - 32;
 	}
-	return a == b; //returns 1 if characters match, otherwise returns 0
+
+	return a == b; // returns 1 if characters match, otherwise returns 0
 }
 
-void markPath(int** path, int row, int col, int index){
+void markPath(int** path, int row, int col, int index) {
     int current = *(*(path + row) + col);
-    if(current == 0){
+    if (current == 0) {
         *(*(path + row) + col) = index;
-    } else{
+    } else {
         // Combine indices if multiple paths go through the same cell
-        *(*(path + row) + col) = current * 10 + index;
+        // Changed this code to match the expected output (Ex: 246 to 642)
+        // *(*(path + row) + col) = current * 10 + index; --> Output: 246 (2nd sample run)
+        // The above line can also work as from the instructions, but just for matching the exact output
+        int temp = current;
+        while (temp > 0) {
+            index *= 10;
+            temp /= 10;
+        }
+        *(*(path + row) + col) = index + current;
     }
 }
 
-int searchWord(char** arr, char* word, int row, int col, int** path, int step, int wordLen){
+int searchWord(char** arr, char* word, int row, int col, int** path, int step, int wordLen) {
     // here is the base case where we check if we've found all characters
-    if (step == wordLen){
+    if (step == wordLen) {
         return 1;
     }
     
     // here we check the bounds
-    if (row < 0 || row >= bSize || col < 0 || col >= bSize){
+    if (row < 0 || row >= bSize || col < 0 || col >= bSize) {
         return 0;
     }
     
     // here we check if the current cell matches the current character
-    if (!isSameChar(*(*(arr + row) + col), *(word + step))){
+    if (!isSameChar(*(*(arr + row) + col), *(word + step))) {
         return 0;
     }
     
@@ -138,19 +133,19 @@ int searchWord(char** arr, char* word, int row, int col, int** path, int step, i
     int dc[] = {-1, 0, 1, -1, 1, -1, 0, 1};
     
     // trying all directions
-    for (int i = 0; i < 8; i++){
+    for (int i = 0; i < 8; i++) {
         int newRow = row + *(dr + i);
         int newCol = col + *(dc + i);
         
-        if (searchWord(arr, word, newRow, newCol, path, step + 1, wordLen)){
+        if (searchWord(arr, word, newRow, newCol, path, step + 1, wordLen)) {
             return 1;
         }
     }
     
     // if no direction worked we unmark this cell (ie. we backtrack)
-    if (currentValue == 0){
+    if (currentValue == 0) {
         *(*(path + row) + col) = 0;
-    } else{
+    } else {
         // this restores the original value
         *(*(path + row) + col) = currentValue;
     }
@@ -165,8 +160,7 @@ void searchPuzzle(char** arr, char* word) {
     // different message as shown in the sample runs.
     // Your implementation here...
 
-	int wordLen = wordlength(word); //I changed it from wordLength to wordlength (with a lowercase l)
-	
+	int wordLen = strlen(word); // Deleted the wordlength function, Doesn't violate the 2nd rule
     // search_path - 2D-array with all 0s initialized in each row and col
     int** search_path = (int**) malloc (bSize * sizeof(int*));
     for (int i = 0; i < bSize; i++) {
@@ -176,9 +170,8 @@ void searchPuzzle(char** arr, char* word) {
         }
     }
     
-    //int word_length = wordlength(word);
     int found = 0;
-    // This was the code that needed to be fixed. I made a revised version of it. But I am leaving this here just for future reference.
+    // Code for future reference
     // for (int k = 0; k < word_length; k++) {
     //     char curr_letter = *(word + k);
     //     int curr_index_found = 0;
@@ -199,46 +192,48 @@ void searchPuzzle(char** arr, char* word) {
     //         found = 1;
     //     }
     // }
-	for(int i = 0; i < bSize; i++){
-        for(int j = 0; j < bSize; j++){
-            if(isSameChar(*(*(arr + i) + j), *word)){
+	for (int i = 0; i < bSize; i++) {
+        for (int j = 0; j < bSize; j++) {
+            if (isSameChar(*(*(arr + i) + j), *word)) {
                 // this creates a temporary path for this search
                 int** temp_path = (int**) malloc (bSize * sizeof(int*));
-                for(int x = 0; x < bSize; x++){
+                for (int x = 0; x < bSize; x++) {
                     *(temp_path + x) = (int*) malloc (bSize * sizeof(int));
                     for(int y = 0; y < bSize; y++){
                         *(*(temp_path + x) + y) = *(*(search_path + x) + y);
                     }
                 }
                 
-                if(searchWord(arr, word, i, j, temp_path, 0, wordLen)){
+                if (searchWord(arr, word, i, j, temp_path, 0, wordLen)) {
                     found = 1;
                     // this copies temp_path to search_path
-                    for(int x = 0; x < bSize; x++){
-                        for (int y = 0; y < bSize; y++){
+                    for (int x = 0; x < bSize; x++) {
+                        for (int y = 0; y < bSize; y++) {
                             *(*(search_path + x) + y) = *(*(temp_path + x) + y);
                         }
                     }
                 }
                 
                 // this frees the temporary path
-                for(int x = 0; x < bSize; x++){
+                for (int x = 0; x < bSize; x++) {
                     free(*(temp_path + x));
                 }
                 free(temp_path);
                 
-                if(found){
-                    break;
-                }
+                // If I comment these out, this can complete the bonus feature
+                // if (found) {
+                //     break;
+                // }
             }
         }
-        if(found){
-            break;
-        }
+        // If I comment these out, this can complete the bonus feature
+        // if (found) {
+        //     break;
+        // }
     }
 
-	//I modified the code here because the previous output was slanted, and this one is straight
-    if(found){
+	// I modified the code here because the previous output was slanted, and this one is straight
+    if (found) {
         printf("Word found!\n");
 		printf("Printing the search path:\n");
 		for(int i = 0; i < bSize; i++){
@@ -247,12 +242,12 @@ void searchPuzzle(char** arr, char* word) {
 			}
 			printf("\n");
     	}
-	} else{
+	} else {
 		printf("Word not found!\n");
 	}
 
-	//frees up memory because why not lol
-	for(int i = 0; i < bSize; i++){
+	// frees up memory because why not lol
+	for (int i = 0; i < bSize; i++) {
 		free(*(search_path + i));
 	}
 	free(search_path);
