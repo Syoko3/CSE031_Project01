@@ -95,8 +95,8 @@ void markPath(int** path, int row, int col, int index) {
     } else {
         // Combine indices if multiple paths go through the same cell
         // Changed this code to match the expected output (Ex: 246 to 642)
-        // *(*(path + row) + col) = current * 10 + index; --> Output: 246 (2nd sample run)
-        // The above line can also work as from the instructions, but just for matching the exact output
+        // *(*(path + row) + col) = current * 10 + index; --> (Ex) Output: 246 (2nd sample run)
+        // The above line can also work as from the instructions, but just for matching the output of sample runs
         int temp = current;
         while (temp > 0) {
             index *= 10;
@@ -129,8 +129,35 @@ int searchWord(char** arr, char* word, int row, int col, int** path, int step, i
     markPath(path, row, col, step + 1);
     
     // defining all 8 directions
-    int dr[] = {-1, -1, -1, 0, 0, 1, 1, 1};
-    int dc[] = {-1, 0, 1, -1, 1, -1, 0, 1};
+    // int dr[] = {-1, -1, -1, 0, 0, 1, 1, 1};
+    // int dc[] = {-1, 0, 1, -1, 1, -1, 0, 1};
+    // For avoiding using array notation []
+    int *dr = (int *) malloc (8 * sizeof(int));
+    int *dc = (int *) malloc (8 * sizeof(int));
+
+    for (int i = 0; i < 8; i++) {
+        if (i < 3) {
+            *(dr + i) = -1;
+        }
+        else if (i >= 3 && i < 5) {
+            *(dr + i) = 0;
+        }
+        else {
+            *(dr + i) = 1;
+        }
+    }
+
+    for (int j = 0; j < 8; j++) {
+        if (j == 0 || j == 3 || j == 5) {
+            *(dc + j) = -1;
+        }
+        else if (j == 1 || j == 6) {
+            *(dc + j) = 0;
+        }
+        else {
+            *(dc + j) = 1;
+        }
+    }
     
     // trying all directions
     for (int i = 0; i < 8; i++) {
@@ -150,6 +177,9 @@ int searchWord(char** arr, char* word, int row, int col, int** path, int step, i
         *(*(path + row) + col) = currentValue;
     }
     
+    // Free up memory for dr and dc
+    free(dr);
+    free(dc);
     return 0;
 }
 
@@ -159,10 +189,10 @@ void searchPuzzle(char** arr, char* word) {
     // as shown in the sample runs. If not found, it will print a 
     // different message as shown in the sample runs.
     // Your implementation here...
-
 	int wordLen = strlen(word); // Deleted the wordlength function, Doesn't violate the 2nd rule
     // search_path - 2D-array with all 0s initialized in each row and col
     int** search_path = (int**) malloc (bSize * sizeof(int*));
+
     for (int i = 0; i < bSize; i++) {
         *(search_path + i) = (int*) malloc (bSize * sizeof(int));
         for (int j = 0; j < bSize; j++) {
@@ -220,13 +250,13 @@ void searchPuzzle(char** arr, char* word) {
                 }
                 free(temp_path);
                 
-                // If I comment these out, this can complete the bonus feature
+                // If commenting these out, this can complete the bonus feature
                 // if (found) {
                 //     break;
                 // }
             }
         }
-        // If I comment these out, this can complete the bonus feature
+        // If commenting these out, this can complete the bonus feature
         // if (found) {
         //     break;
         // }
@@ -246,7 +276,7 @@ void searchPuzzle(char** arr, char* word) {
 		printf("Word not found!\n");
 	}
 
-	// frees up memory because why not lol
+	// frees up memory for search_path
 	for (int i = 0; i < bSize; i++) {
 		free(*(search_path + i));
 	}

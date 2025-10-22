@@ -1,0 +1,19 @@
+Names: Sohdai Yokokawa, David Kyriakidis
+
+Show the sample runs of wordsearch.c from instructions
+If any additional test files, pseudocode, notes, turn in also.
+Answer questions from TA
+
+Explanation (If needed at Demo):
+The printPuzzle function is just using the pointer notation to access each row, col element in arr and print it.
+For the searchPuzzle function, we created 3 helper functions, which are isSameChar, searchWord, and markPath.
+isSameChar is to make the code case insensitive AND to compare two letters (a letter from the puzzle grid compared
+with a letter from the user's word). searchWord is to search for the word recursively, and markPath is to mark the
+path in the result matrix.
+For the isSameChar function, we pass char a and char b, and convert them to the uppercase
+characters by subtracting 32 as lowercase characters are always 32 higher than uppercase characters in ASCII. It
+returns 1 if characters match, otherwise 0.
+For the markPath function, 
+For the searchWord function, 
+For the searchPuzzle function, we first defined the word length, and declared 2D-integer array searchPath to print
+numbers at the end.
