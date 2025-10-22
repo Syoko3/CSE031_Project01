@@ -11,6 +11,7 @@ int bSize; //global variable to hold puzzle grid size
 //helper function declarations go here 🐻😭😭🙏
 int wordlength(char* word); // purpose of this function is to count the user's word length
 int isSameChar(char a, char b); // purpose of this function is to make the code case insensitive AND to compare two letters (a letter from the puzzle grid compared with a letter from the user's word)
+int searchWord(char** arr, char* word, int row, int col, int** path, int step, int wordLen); //purpose of this function is to search for the word recursively
 void markPath(int** path, int row, int col, int index); // purpose of this function is to mark the path in the result matrix
 
 // Main function, DO NOT MODIFY 	
@@ -110,12 +111,62 @@ void markPath(int** path, int row, int col, int index){
     }
 }
 
+int searchWord(char** arr, char* word, int row, int col, int** path, int step, int wordLen){
+    // here is the base case where we check if we've found all characters
+    if (step == wordLen){
+        return 1;
+    }
+    
+    // here we check the bounds
+    if (row < 0 || row >= bSize || col < 0 || col >= bSize){
+        return 0;
+    }
+    
+    // here we check if the current cell matches the current character
+    if (!isSameChar(*(*(arr + row) + col), *(word + step))){
+        return 0;
+    }
+    
+    // this line saves the current value in case we need to do some backtracking
+    int currentValue = *(*(path + row) + col);
+    
+    // this marks the current step in the path using the markPath function
+    markPath(path, row, col, step + 1);
+    
+    // defining all 8 directions
+    int dr[] = {-1, -1, -1, 0, 0, 1, 1, 1};
+    int dc[] = {-1, 0, 1, -1, 1, -1, 0, 1};
+    
+    // trying all directions
+    for (int i = 0; i < 8; i++){
+        int newRow = row + *(dr + i);
+        int newCol = col + *(dc + i);
+        
+        if (searchWord(arr, word, newRow, newCol, path, step + 1, wordLen)){
+            return 1;
+        }
+    }
+    
+    // if no direction worked we unmark this cell (ie. we backtrack)
+    if (currentValue == 0){
+        *(*(path + row) + col) = 0;
+    } else{
+        // this restores the original value
+        *(*(path + row) + col) = currentValue;
+    }
+    
+    return 0;
+}
+
 void searchPuzzle(char** arr, char* word) {
     // This function checks if arr contains the search word. If the 
     // word appears in arr, it will print out a message and the path 
     // as shown in the sample runs. If not found, it will print a 
     // different message as shown in the sample runs.
     // Your implementation here...
+
+	int wordLen = wordLength(word);
+	
     // search_path - 2D-array with all 0s initialized in each row and col
     int** search_path = (int**) malloc (bSize * sizeof(int*));
     for (int i = 0; i < bSize; i++) {
@@ -125,7 +176,7 @@ void searchPuzzle(char** arr, char* word) {
         }
     }
     
-    int word_length = wordlength(word);
+    //int word_length = wordlength(word);
     int found = 0;
     // This code needs to be fixed
     // for (int k = 0; k < word_length; k++) {
@@ -148,19 +199,63 @@ void searchPuzzle(char** arr, char* word) {
     //         found = 1;
     //     }
     // }
-
-    if (found == 0) {
-        printf("Word not found!\n");
-    }
-    else {
-        printf("Word found!\n");
-        printf("Printing the search path:\n");
-        for (int i = 0; i < bSize; i++) {
-            for (int j = 0; j < bSize; j++) {
-                printf("%d     ", *(*(search_path + i) + j));
+	for(int i = 0; i < bSize; i++){
+        for(int j = 0; j < bSize; j++){
+            if(isSameChar(*(*(arr + i) + j), *word)){
+                // this creates a temporary path for this search
+                int** temp_path = (int**) malloc (bSize * sizeof(int*));
+                for(int x = 0; x < bSize; x++){
+                    *(temp_path + x) = (int*) malloc (bSize * sizeof(int));
+                    for(int y = 0; y < bSize; y++){
+                        *(*(temp_path + x) + y) = *(*(search_path + x) + y);
+                    }
+                }
+                
+                if(searchWord(arr, word, i, j, temp_path, 0, wordLen)){
+                    found = 1;
+                    // this copies temp_path to search_path
+                    for(int x = 0; x < bSize; x++){
+                        for (int y = 0; y < bSize; y++){
+                            *(*(search_path + x) + y) = *(*(temp_path + x) + y);
+                        }
+                    }
+                }
+                
+                // this frees the temporary path
+                for(int x = 0; x < bSize; x++){
+                    free(*(temp_path + x));
+                }
+                free(temp_path);
+                
+                if(found){
+                    break;
+                }
             }
-            printf("\n");
         }
-        printf("\n");
+        if(found){
+            break;
+        }
     }
+
+	//I modified the code here because the previous output was slanted, and this one is straight
+    if(found){
+        printf("Word found!\n");
+		printf("Printing the search path:\n");
+		for(int i = 0; i < bSize; i++){
+			for(int j = 0; j < bSize; j++){
+				printf("%d\t", *(*(search_path + i) + j));
+			}
+			printf("\n");
+    	}
+	} else{
+		printf("Word not found!\n");
+	}
+
+	//frees up memory because why not lol
+	for(int i = 0; i < bSize; i++){
+		free(*(search_path + i));
+	}
+	free(search_path);
 }
+
+    
