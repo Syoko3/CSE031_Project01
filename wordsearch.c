@@ -131,7 +131,7 @@ int searchWord(char** arr, char* word, int row, int col, int** path, int step, i
     // defining all 8 directions
     // int dr[] = {-1, -1, -1, 0, 0, 1, 1, 1};
     // int dc[] = {-1, 0, 1, -1, 1, -1, 0, 1};
-    // For avoiding using array notation []
+    // For avoiding using array notation []:
     int *dr = (int *) malloc (8 * sizeof(int));
     int *dc = (int *) malloc (8 * sizeof(int));
 
@@ -189,6 +189,7 @@ void searchPuzzle(char** arr, char* word) {
     // as shown in the sample runs. If not found, it will print a 
     // different message as shown in the sample runs.
     // Your implementation here...
+
 	int wordLen = strlen(word); // Deleted the wordlength function, Doesn't violate the 2nd rule
     // search_path - 2D-array with all 0s initialized in each row and col
     int** search_path = (int**) malloc (bSize * sizeof(int*));
@@ -201,27 +202,6 @@ void searchPuzzle(char** arr, char* word) {
     }
     
     int found = 0;
-    // Code for future reference
-    // for (int k = 0; k < word_length; k++) {
-    //     char curr_letter = *(word + k);
-    //     int curr_index_found = 0;
-    //     for (int i = 0; i < bSize; i++) {
-    //         for (int j = 0; j < bSize; j++) {
-    //             int same = isSameChar(*(*(arr + i) + j), curr_letter);
-    //             if (same == 1) {
-    //                 markPath(search_path, i, j, k + 1);
-    //                 curr_index_found = 1;
-    //             }
-    //         }
-    //     }
-    //     if (curr_index_found == 0) {
-    //         found = 0;
-    //         break;
-    //     }
-    //     else {
-    //         found = 1;
-    //     }
-    // }
 	for (int i = 0; i < bSize; i++) {
         for (int j = 0; j < bSize; j++) {
             if (isSameChar(*(*(arr + i) + j), *word)) {
@@ -249,20 +229,11 @@ void searchPuzzle(char** arr, char* word) {
                     free(*(temp_path + x));
                 }
                 free(temp_path);
-                
-                // If commenting these out, this can complete the bonus feature
-                // if (found) {
-                //     break;
-                // }
             }
         }
-        // If commenting these out, this can complete the bonus feature
-        // if (found) {
-        //     break;
-        // }
     }
 
-	// I modified the code here because the previous output was slanted, and this one is straight
+	// I (David) modified the code here because the previous output was slanted, and this one is straight
     if (found) {
         printf("Word found!\n");
 		printf("Printing the search path:\n");

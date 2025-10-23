@@ -1,19 +1,62 @@
 Names: Sohdai Yokokawa, David Kyriakidis
 
-Show the sample runs of wordsearch.c from instructions
-If any additional test files, pseudocode, notes, turn in also.
+Show the sample runs (and any additional test cases if provided) of wordsearch.c from instructions
+If any additional test files, pseudocode, notes, turn in also
 Answer questions from TA
 
-Explanation (If needed at Demo):
-The printPuzzle function is just using the pointer notation to access each row, col element in arr and print it.
-For the searchPuzzle function, we created 3 helper functions, which are isSameChar, searchWord, and markPath.
-isSameChar is to make the code case insensitive AND to compare two letters (a letter from the puzzle grid compared
-with a letter from the user's word). searchWord is to search for the word recursively, and markPath is to mark the
-path in the result matrix.
-For the isSameChar function, we pass char a and char b, and convert them to the uppercase
-characters by subtracting 32 as lowercase characters are always 32 higher than uppercase characters in ASCII. It
-returns 1 if characters match, otherwise 0.
-For the markPath function, 
-For the searchWord function, 
-For the searchPuzzle function, we first defined the word length, and declared 2D-integer array searchPath to print
-numbers at the end.
+Explanation (If needed at Demo, you can change if you want):
+printPuzzle function - Just using the pointer notation to access each row and col element in arr and print it
+
+searchPuzzle function - Created 3 helper functions, which are isSameChar, searchWord, and markPath
+- isSameChar is to make the code case insensitive AND to compare two letters (a letter from the puzzle grid compared
+with a letter from the user's word)
+- searchWord is to search for the word recursively
+- markPath is to mark the path in the result matrix
+
+isSameChar function:
+- Pass char a and char b, and convert them to the uppercase characters by subtracting 32 as lowercase characters are
+always 32 higher than uppercase characters in ASCII
+- It returns 1 if characters match, otherwise 0
+
+markPath function:
+- Passes the 2D-integer array path, row, col, and index, and the current variable stores the element at the current row
+and column of the path
+- If current is 0, then the current row and column of the path stores as the current index of the word
+- If current is other than 0, which means multiple paths going through the same cell, then it combines the indices by
+declaring temp for current, and multiplying the index by 10 and dividing the temp by 10, until temp goes to 0
+- After that the current row and column of the path stores as the sum of index and current
+
+searchWord function:
+- Passes the arr, word, row, col, path, step, wordLen
+- Base case as this function is called recursively, and see if we've found all characters (If so, return 1)
+- Check out of bounds, and if it is, return 0
+- Check the current row and column cell that matches the character or not
+- currentValue variable for backtracking later
+- markPath function called for marking the step in the path
+- Defining all 8 directions using 2 arrays dr and dc
+- Check all directions by calling searchWord function recursively (If it is found, return 1)
+- No direction worked --> Unmark the cell (backtracking)
+
+searchPuzzle function:
+- Determine the word length first, stored in wordLen variable
+- searchPath - 2D integer array will all 0s initialized in each row and col for printing the updated values later
+- found variable declared and initialized to 0
+- Call isSameChar function for each row and col, and if it returns 1:
+    - temp_Path - 2D integer array for each search
+    - Call searchWord function by passing the arr, word, current row and col, temp_Path, 0, and wordLen
+    - If it returns 1, found variable set to 1, and copies the temp_Path to searchPath
+- If found is 1, print "Word found!", along with the searchPath with updated values
+- If found is 0, print "Word not found!"
+
+If needed, explain each role?
+Sohdai:
+- Implemented the printPuzzle function
+- Implemented the searchPuzzle function with declaring the 2D-integer array search path using malloc, and initializing
+each row and column to 0, so that it will print the updated values later
+- Fixed the code in the helper and searchPuzzle functions that David implemented to match the exact output as the
+sample runs and bonus feature
+
+David:
+- Declared and implemented 3 helper functions (isSameChar, markPath, searchWord)
+- Implemented (fixed) the code for searchPuzzle function to make more straight for searchPath to print the values
+- Implemented freeing up memory for all arrays that are declared by ours correctly
