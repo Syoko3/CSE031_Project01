@@ -1,10 +1,6 @@
 Names: Sohdai Yokokawa, David Kyriakidis
 
-Show the sample runs (and any additional test cases if provided) of wordsearch.c from instructions
-If any additional test files, pseudocode, notes, turn in also
-Answer questions from TA
-
-Explanation (If needed at Demo, you can change if you want):
+Explanation of the code:
 printPuzzle function - Just using the pointer notation to access each row and col element in arr and print it
 
 searchPuzzle function - Created 3 helper functions, which are isSameChar, searchWord, and markPath
@@ -33,7 +29,7 @@ searchWord function:
 - Check the current row and column cell that matches the character or not
 - currentValue variable for backtracking later
 - markPath function called for marking the step in the path
-- Defining all 8 directions using 2 arrays dr and dc
+- Defining all 8 directions using 2 arrays dr and dc (letters found in the word has to be one index away from each other)
 - Check all directions by calling searchWord function recursively (If it is found, return 1)
 - No direction worked --> Unmark the cell (backtracking)
 
@@ -48,7 +44,7 @@ searchPuzzle function:
 - If found is 1, print "Word found!", along with the searchPath with updated values
 - If found is 0, print "Word not found!"
 
-If needed, explain each role?
+Each role:
 Sohdai:
 - Implemented the printPuzzle function
 - Implemented the searchPuzzle function with declaring the 2D-integer array search path using malloc, and initializing
